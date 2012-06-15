@@ -145,7 +145,6 @@ class APN::App < APN::Base
   protected
 
   def self.log_connection_exception(ex)
-    STDERR.puts ex.message
     raise ex
   end
 
