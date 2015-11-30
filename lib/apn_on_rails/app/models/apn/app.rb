@@ -38,20 +38,13 @@ class APN::App < APN::Base
   end
 
   def self.send_notifications_for_cert(the_cert, app_id)
-    # unless self.unsent_notifications.nil? || self.unsent_notifications.empty?
-      if (app_id == nil)
-        conditions = "app_id is null"
-      else
-        conditions = ["app_id = ?", app_id]
-      end
       begin
         APN::Connection.open_for_delivery({:cert => the_cert}) do |conn, sock|
-          APN::Device.find_each(:conditions => conditions) do |dev|
-            dev.unsent_notifications.each do |noty|
-              conn.write(noty.message_for_sending)
-              noty.sent_at = Time.now
-              noty.save
-            end
+          unsent_notifications = APN::Notification.where("sent_at is null")
+          unsent_notifications.each do |noty|
+            conn.write(noty.message_for_sending)
+            noty.sent_at = Time.now
+            noty.save
           end
         end
       rescue Exception => e
