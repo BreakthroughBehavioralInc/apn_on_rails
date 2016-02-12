@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency('configatron', '~> 2.9.0')
+  s.add_runtime_dependency('configatron')
   s.add_runtime_dependency('activerecord')
   s.add_runtime_dependency('actionpack')
 
