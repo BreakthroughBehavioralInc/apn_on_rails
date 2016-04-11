@@ -40,7 +40,7 @@ class APN::Notification < APN::Base
   def apple_hash
     result = {}
     result['aps'] = {}
-    result['aps']['alert'] = self.alert if self.alert
+    result['aps']['alert'] = alert_value if self.alert
     result['aps']['badge'] = self.badge.to_i if self.badge
     if self.sound
       result['aps']['sound'] = self.sound if self.sound.is_a? String
@@ -53,6 +53,16 @@ class APN::Notification < APN::Base
     end
     result
   end
+
+  # Return hash if alert is hash, otherwise return the string
+  def alert_value
+    begin
+      JSON.parse(self.alert)
+    rescue JSON::ParserError
+      self.alert
+    end
+  end
+
   
   # Creates the JSON string required for an APN message.
   # 
