@@ -48,7 +48,9 @@ class APN::Notification < APN::Base
     end
     if self.custom_properties
       self.custom_properties.each do |key,value|
-        result["#{key}"] = "#{value}"
+        #result["#{key}"] = "#{value}"
+        # could be a string or a hash
+        result["#{key}"] = value
       end
     end
     result
